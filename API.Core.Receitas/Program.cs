@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Receitas.Aplicacao.Comandos;
 using Receitas.Aplicacao.Consultas;
+using Receitas.Repositorio.Comandos;
 using Receitas.Repositorio.Consultas;
 using Supabase;
 
@@ -25,6 +27,9 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddScoped<IReceitasConsultas, ReceitasConsultas>();
 builder.Services.AddScoped<IReceitasConsultaRepositorio, ReceitasConsultaRepositorio>();
+
+builder.Services.AddScoped<IReceitasComandos, ReceitasComandos>();
+builder.Services.AddScoped<IReceitasComandosRepositorio, ReceitasComandosRepositorio>();
 
 
 var app = builder.Build();
