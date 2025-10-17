@@ -53,5 +53,22 @@ namespace API.Core.Receitas.Controllers
                 return BadRequest(new { Mensagem = ex.Message });
             }
         }
+
+        [HttpGet("ListarTiposReceitas")]
+        [SwaggerOperation(Summary = "Método para listar os tipos da receita")]
+        [ProducesResponseType(typeof(TiposReceitaDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ListarTiposReceitas()
+        {
+            try
+            {
+                var resultado = await Task.Run(() => _consultas.ObterListaTiposReceita());
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Mensagem = ex.Message });
+            }
+        }
     }
 }

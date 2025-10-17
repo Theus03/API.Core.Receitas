@@ -11,5 +11,6 @@ namespace Receitas.Repositorio.Consultas
     public interface IReceitasConsultaRepositorio
     {
         public Task<IEnumerable<ReceitaDto>> ObterReceitas();
+        public Task<IEnumerable<TiposReceitaDto>> ObterTiposReceitas();
     }
 }

@@ -39,5 +39,24 @@ namespace Receitas.Repositorio.Consultas
                 Nome = r.Nome
             });
         }
+
+        public async Task<IEnumerable<TiposReceitaDto>> ObterTiposReceitas()
+        {
+            var supabaseUrl = _configuration["SupabaseUrl"];
+            var supabaseKey = _configuration["SupabaseKey"];
+
+            var client = new Client(supabaseUrl!, supabaseKey);
+
+            await client.InitializeAsync();
+
+            var response = await client.From<TiposReceita>().Get();
+
+            return response.Models.Select(t => new TiposReceitaDto
+            {
+                IdTipoReceita = t.IdTipoReceita,
+                DataCriacao = t.DataCriacao,
+                TipoReceita = t.TipoReceita
+            });
+        }
     }
 }
