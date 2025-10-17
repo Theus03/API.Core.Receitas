@@ -46,5 +46,30 @@ namespace Receitas.Repositorio.Comandos
             }).FirstOrDefault()!;
 
         }
+
+        public async Task<TiposReceitaDto> InserirTipoReceita(TiposReceitaDto tipoReceita)
+        {
+            var supabaseUrl = _configuration["supabaseUrl"];
+            var supabaseKey = _configuration["supabaseKey"];
+
+            var client = new Client(supabaseUrl!, supabaseKey);
+
+            await client.InitializeAsync();
+
+            TiposReceita novoTipoReceita = new TiposReceita
+            {
+                DataCriacao = DateTime.UtcNow,
+                TipoReceita = tipoReceita.TipoReceita
+            };
+
+            var response = await client.From<TiposReceita>().Insert(novoTipoReceita);
+
+            return response.Models.Select(r => new TiposReceitaDto
+            {
+                IdTipoReceita = r.IdTipoReceita,
+                DataCriacao = r.DataCriacao,
+                TipoReceita = r.TipoReceita
+            }).FirstOrDefault()!;
+        }
     }
 }

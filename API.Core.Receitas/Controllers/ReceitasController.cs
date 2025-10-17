@@ -56,13 +56,30 @@ namespace API.Core.Receitas.Controllers
 
         [HttpGet("ListarTiposReceitas")]
         [SwaggerOperation(Summary = "Método para listar os tipos da receita")]
-        [ProducesResponseType(typeof(TiposReceitaDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<TiposReceitaDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ListarTiposReceitas()
         {
             try
             {
                 var resultado = await Task.Run(() => _consultas.ObterListaTiposReceita());
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Mensagem = ex.Message });
+            }
+        }
+
+        [HttpPost("InserirTiposReceitas")]
+        [SwaggerOperation(Summary = "Método para inserir o tipo da receita")]
+        [ProducesResponseType(typeof(TiposReceitaDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> InserirTiposReceitas([FromBody] TiposReceitaDto tipoReceita)
+        {
+            try
+            {
+                var resultado = await Task.Run(() => _comandos.InserirTipoReceita(tipoReceita));
                 return Ok(resultado);
             }
             catch (Exception ex)

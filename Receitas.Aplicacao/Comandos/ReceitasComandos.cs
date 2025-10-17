@@ -22,5 +22,10 @@ namespace Receitas.Aplicacao.Comandos
         {
             return await _comandos.InserirReceita(receita);
         }
+
+        public async Task<TiposReceitaDto> InserirTipoReceita(TiposReceitaDto tipoReceita)
+        {
+            return await _comandos.InserirTipoReceita(tipoReceita);
+        }
     }
 }
