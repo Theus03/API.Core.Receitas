@@ -11,6 +11,7 @@ namespace Receitas.Aplicacao.Consultas
     public interface IReceitasConsultas
     {
         public Task<IEnumerable<ReceitaDto>> ObterListaReceitas();
+        public Task<ReceitaDto> ObterReceitaPorId(int id);
         public Task<IEnumerable<TiposReceitaDto>> ObterListaTiposReceita();
     }
 }

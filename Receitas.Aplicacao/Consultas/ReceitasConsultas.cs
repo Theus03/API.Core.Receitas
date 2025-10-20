@@ -24,6 +24,12 @@ namespace Receitas.Aplicacao.Consultas
             return receitas;
         }
 
+        public async Task<ReceitaDto> ObterReceitaPorId(int id)
+        {
+            ReceitaDto receita = await _consultas.ObterReceitaPorId(id);
+            return receita;
+        }
+
         public async Task<IEnumerable<TiposReceitaDto>> ObterListaTiposReceita()
         {
             IEnumerable<TiposReceitaDto> tiposReceitas = await _consultas.ObterTiposReceitas();

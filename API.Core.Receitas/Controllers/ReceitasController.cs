@@ -37,9 +37,30 @@ namespace API.Core.Receitas.Controllers
             }
         }
 
+        [HttpGet("ObterReceita")]
+        [SwaggerOperation(Summary = "Método para obter uma receita pelo Id")]
+        [ProducesResponseType(typeof(ReceitaDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ObterReceita([FromQuery] int idReceita)
+        {
+            try
+            {
+                var receita = await Task.Run(() => _consultas.ObterReceitaPorId(idReceita));
+                if (receita == null)
+                {
+                    return NotFound(new { Mensagem = "Receita não encontrada." });
+                }
+                return Ok(receita);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Mensagem = ex.Message });
+            }
+        }
+
         [HttpPost("InserirReceita")]
         [SwaggerOperation(Summary = "Método para inserir uma receita")]
-        [ProducesResponseType(typeof(ReceitaDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ReceitaDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> InserirReceita([FromBody] ReceitaDto receita)
         {
@@ -73,7 +94,7 @@ namespace API.Core.Receitas.Controllers
 
         [HttpPost("InserirTiposReceitas")]
         [SwaggerOperation(Summary = "Método para inserir o tipo da receita")]
-        [ProducesResponseType(typeof(TiposReceitaDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(TiposReceitaDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> InserirTiposReceitas([FromBody] TiposReceitaDto tipoReceita)
         {

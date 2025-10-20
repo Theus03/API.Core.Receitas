@@ -40,6 +40,28 @@ namespace Receitas.Repositorio.Consultas
             });
         }
 
+        public async Task<ReceitaDto> ObterReceitaPorId(int id)
+        {
+            var supabaseUrl = _configuration["SupabaseUrl"];
+            var supabaseKey = _configuration["SupabaseKey"];
+
+            var client = new Client(supabaseUrl!, supabaseKey);
+
+            await client.InitializeAsync();
+            
+            var receita = await client.From<Receita>().Where(r => r.IdReceita == id).Get();
+            
+            var rModel = receita.Models.FirstOrDefault();
+
+            return new ReceitaDto
+            {
+                IdReceita = rModel?.IdReceita,
+                IdTipoReceita = rModel?.IdTipoReceita,
+                DataCriacao = rModel?.DataCriacao,
+                Nome = rModel?.Nome
+            };
+        }
+
         public async Task<IEnumerable<TiposReceitaDto>> ObterTiposReceitas()
         {
             var supabaseUrl = _configuration["SupabaseUrl"];
