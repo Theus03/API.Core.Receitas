@@ -5,15 +5,15 @@ VisualStudioVersion = 17.14.36221.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.Core.Receitas", "API.Core.Receitas\API.Core.Receitas.csproj", "{FE441B9E-E75A-4128-98C7-E247ADB59F79}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Apresentacao", "1 - Apresentacao", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1-Apresentacao", "1-Apresentacao", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Aplicacao", "2 - Aplicacao", "{E5C1543C-5A3C-4BF6-95CA-9C75954DE506}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2-Aplicacao", "2-Aplicacao", "{E5C1543C-5A3C-4BF6-95CA-9C75954DE506}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Dominio", "3 - Dominio", "{97FB32B6-2FF2-4F29-9D94-2ED5458CB6FB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3-Dominio", "3-Dominio", "{97FB32B6-2FF2-4F29-9D94-2ED5458CB6FB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Infraestrutura", "4 - Infraestrutura", "{6A130EE3-8B39-454A-B8DE-71E42214D1BC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4-Infraestrutura", "4-Infraestrutura", "{6A130EE3-8B39-454A-B8DE-71E42214D1BC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - Testes", "5 - Testes", "{7720C0C9-9AD5-42CA-88BD-A78A11AD3A1D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5-Testes", "5-Testes", "{7720C0C9-9AD5-42CA-88BD-A78A11AD3A1D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Receitas.Aplicacao", "Receitas.Aplicacao\Receitas.Aplicacao.csproj", "{A97279F0-981E-4CF4-9723-C125865FA2BF}"
 EndProject
