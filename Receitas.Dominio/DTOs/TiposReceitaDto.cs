@@ -11,5 +11,6 @@ namespace Receitas.Dominio.DTOs
         public int? IdTipoReceita { get; set; }
         public DateTime? DataCriacao { get; set; }
         public string? TipoReceita { get; set; }
+        public int? QuantidadeReceitas { get; set; }
     }
 }

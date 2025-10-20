@@ -29,9 +29,9 @@ namespace Receitas.Repositorio.Consultas
 
             await client.InitializeAsync();
 
-            var response = await client.From<Receita>().Get();
+            var receitas = await client.From<Receita>().Get();
 
-            return response.Models.Select(r => new ReceitaDto
+            return receitas.Models.Select(r => new ReceitaDto
             {
                 IdReceita = r.IdReceita,
                 IdTipoReceita = r.IdTipoReceita,
@@ -49,13 +49,16 @@ namespace Receitas.Repositorio.Consultas
 
             await client.InitializeAsync();
 
-            var response = await client.From<TiposReceita>().Get();
+            var tiposReceitas = await client.From<TiposReceita>().Get();
 
-            return response.Models.Select(t => new TiposReceitaDto
+            var qtdeTipoPorReceita = await client.From<Receita>().Where(r => r.IdTipoReceita != null).Get();
+
+            return tiposReceitas.Models.Select(t => new TiposReceitaDto
             {
                 IdTipoReceita = t.IdTipoReceita,
                 DataCriacao = t.DataCriacao,
-                TipoReceita = t.TipoReceita
+                TipoReceita = t.TipoReceita,
+                QuantidadeReceitas = qtdeTipoPorReceita.Models.Where(r => r.IdTipoReceita == t.IdTipoReceita).Count()
             });
         }
     }

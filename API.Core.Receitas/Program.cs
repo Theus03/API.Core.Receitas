@@ -54,6 +54,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapGet("/", () => "API Online");
-
 app.Run();
