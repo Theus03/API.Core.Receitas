@@ -1,3 +1,4 @@
+using API.Core.Receitas.Extensoes;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Receitas.Aplicacao.Comandos;
@@ -31,6 +32,7 @@ builder.Services.AddScoped<IReceitasConsultaRepositorio, ReceitasConsultaReposit
 builder.Services.AddScoped<IReceitasComandos, ReceitasComandos>();
 builder.Services.AddScoped<IReceitasComandosRepositorio, ReceitasComandosRepositorio>();
 
+builder.AddConfigCorsExtensions();
 
 var app = builder.Build();
 
@@ -51,6 +53,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors();
 
 app.MapControllers();
 
