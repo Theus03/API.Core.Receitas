@@ -35,6 +35,9 @@ builder.Services.AddScoped<IReceitasComandosRepositorio, ReceitasComandosReposit
 builder.Services.AddScoped<IModoPreparoComando, ModoPreparoComando>();
 builder.Services.AddScoped<IModoPreparoComandosRepositorio, ModoPreparoComandosRepositorio>();
 
+builder.Services.AddScoped<IModoPreparoConsultas, ModoPreparoConsultas>();
+builder.Services.AddScoped<IModoPreparoConsultaRepositorio, ModoPreparoConsultaRepositorio>();
+
 builder.AddConfigCorsExtensions();
 
 var app = builder.Build();
