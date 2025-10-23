@@ -13,11 +13,13 @@ namespace API.Core.Receitas.Controllers
     {
         private readonly IReceitasConsultas _consultas;
         private readonly IReceitasComandos _comandos;
+        private readonly ILogger<ReceitasController> _logger;
 
-        public ReceitasController(IReceitasConsultas consultas, IReceitasComandos comandos)
+        public ReceitasController(IReceitasConsultas consultas, IReceitasComandos comandos, ILogger<ReceitasController> logger)
         {
             _consultas = consultas;
             _comandos = comandos;
+            _logger = logger;
         }
 
         [HttpGet("ListarReceitas")]
@@ -28,6 +30,8 @@ namespace API.Core.Receitas.Controllers
         {
             try
             {
+                _logger.LogInformation("Iniciando a listagem de receitas.");
+
                 var resultado = await Task.Run(() => _consultas.ObterListaReceitas());
                 return Ok(resultado);
             }
@@ -45,6 +49,7 @@ namespace API.Core.Receitas.Controllers
         {
             try
             {
+                _logger.LogInformation($"Obtendo a receita com Id: {idReceita}");
                 var receita = await Task.Run(() => _consultas.ObterReceitaPorId(idReceita));
                 if (receita == null)
                 {
@@ -66,6 +71,7 @@ namespace API.Core.Receitas.Controllers
         {
             try
             {
+                _logger.LogInformation("Inserindo uma nova receita.");
                 var resultado = await Task.Run(() => _comandos.InserirReceita(receita));
                 return Ok(resultado);
             }
@@ -83,6 +89,7 @@ namespace API.Core.Receitas.Controllers
         {
             try
             {
+                _logger.LogInformation("Iniciando a listagem de tipos de receitas.");
                 var resultado = await Task.Run(() => _consultas.ObterListaTiposReceita());
                 return Ok(resultado);
             }
@@ -100,6 +107,7 @@ namespace API.Core.Receitas.Controllers
         {
             try
             {
+                _logger.LogInformation("Inserindo um novo tipo de receita.");
                 var resultado = await Task.Run(() => _comandos.InserirTipoReceita(tipoReceita));
                 return Ok(resultado);
             }

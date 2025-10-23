@@ -12,11 +12,13 @@ namespace API.Core.Receitas.Controllers
     {
         private readonly IModoPreparoComando _comandos;
         private readonly IModoPreparoConsultas _consultas; 
+        private readonly ILogger<ModoPreparoController> _logger;
 
-        public ModoPreparoController(IModoPreparoComando comandos, IModoPreparoConsultas consultas)
+        public ModoPreparoController(IModoPreparoComando comandos, IModoPreparoConsultas consultas, ILogger<ModoPreparoController> logger)
         {
             _comandos = comandos;
             _consultas = consultas;
+            _logger = logger;
         }
 
         [HttpGet("ObterModoPreparo")]
@@ -27,6 +29,7 @@ namespace API.Core.Receitas.Controllers
         {
             try
             {
+                _logger.LogInformation($"Obtendo o modo de preparo para a receita com Id: {idReceita}");
                 var resultado = await Task.Run(() => _consultas.ObterModoPreparoPorIdReceita(idReceita));
                 return Ok(resultado);
             }
@@ -44,6 +47,7 @@ namespace API.Core.Receitas.Controllers
         {
             try
             {
+                _logger.LogInformation("Inserindo um novo modo de preparo.");
                 var resultado = await Task.Run(() => _comandos.InserirModoPreparo(modoPreparo));
                 return Ok(resultado);
             }
