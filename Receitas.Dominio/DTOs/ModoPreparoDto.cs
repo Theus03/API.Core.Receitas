@@ -15,6 +15,7 @@ namespace Receitas.Dominio.DTOs
         public int? QtdeEtapas { get; set; }
         public List<ModoPreparoItem> InstrucoesPreparo { get; set; }
         public List<IngredienteItem> Ingredientes { get; set; }
+        public TimeSpan? Tempo { get; set;  }
     }
     public class ModoPreparoItem
     {

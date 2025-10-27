@@ -35,7 +35,8 @@ namespace Receitas.Repositorio.Comandos
                 IdReceita = modoPreparo.IdReceita,
                 QtdeEtapas = modoPreparo.QtdeEtapas,
                 InstrucoesPreparo = modoPreparo.InstrucoesPreparo.Select(m => new Dominio.Entidades.ModoPreparoItem { Etapa = m.Etapa, Descricao = m.Descricao }).ToList(),
-                Ingredientes = modoPreparo.Ingredientes.Select(i => new Dominio.Entidades.IngredienteItem { Nome = i.Nome, Quantidade = i.Quantidade }).ToList()
+                Ingredientes = modoPreparo.Ingredientes.Select(i => new Dominio.Entidades.IngredienteItem { Nome = i.Nome, Quantidade = i.Quantidade }).ToList(),
+                Tempo = modoPreparo.Tempo
             };
 
             var response = await client.From<ModoPreparo>().Insert(novoModoPreparo);
@@ -46,7 +47,8 @@ namespace Receitas.Repositorio.Comandos
                 DataCriacao = m.DataCriacao,
                 QtdeEtapas = m.QtdeEtapas,
                 InstrucoesPreparo = m.InstrucoesPreparo.Select(m => new Dominio.DTOs.ModoPreparoItem { Etapa = m.Etapa, Descricao = m.Descricao }).ToList(),
-                Ingredientes = m.Ingredientes.Select(i => new Dominio.DTOs.IngredienteItem { Nome = i.Nome, Quantidade = i.Quantidade }).ToList()
+                Ingredientes = m.Ingredientes.Select(i => new Dominio.DTOs.IngredienteItem { Nome = i.Nome, Quantidade = i.Quantidade }).ToList(),
+                Tempo = m.Tempo
             }).FirstOrDefault()!;
         }
     }

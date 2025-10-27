@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Receitas.Dominio.DTOs;
 using Receitas.Dominio.Entidades;
+using Receitas.Dominio.Filtros;
 using Supabase;
 using System;
 using System.Collections.Generic;
@@ -13,13 +14,15 @@ namespace Receitas.Repositorio.Consultas
     public class ReceitasConsultaRepositorio : IReceitasConsultaRepositorio
     {
         private readonly IConfiguration _configuration;
+        private readonly IModoPreparoConsultaRepositorio _modoPreparoConsulta;
 
-        public ReceitasConsultaRepositorio(IConfiguration configuration)
+        public ReceitasConsultaRepositorio(IConfiguration configuration, IModoPreparoConsultaRepositorio modoPreparoConsulta)
         {
             _configuration = configuration;
+            _modoPreparoConsulta = modoPreparoConsulta;
         }
 
-        public async Task<IEnumerable<ReceitaDto>> ObterReceitas()
+        public async Task<IEnumerable<ReceitaDto>> ObterReceitas(FiltroListarReceitas filtro)
         {
 
             var supabaseUrl = _configuration["SupabaseUrl"];
@@ -29,9 +32,25 @@ namespace Receitas.Repositorio.Consultas
 
             await client.InitializeAsync();
 
-            var receitas = await client.From<Receita>().Get();
+            var resposta = await client.From<Receita>().Get();
+            var receitas = resposta.Models.AsQueryable();
 
-            return receitas.Models.Select(r => new ReceitaDto
+            if (!string.IsNullOrEmpty(filtro.Nome))
+                receitas = receitas.Where(r => r.Nome!.ToUpper().Contains(filtro.Nome!.ToUpper().Trim()));
+
+            if (!string.IsNullOrEmpty(filtro.TipoReceita))
+            {
+                var tiposReceita = await ObterTiposReceitas();
+                tiposReceita = tiposReceita.Where(t => t.TipoReceita!.ToUpper() == filtro.TipoReceita!.ToUpper().Trim());
+                receitas = receitas.Where(r => r.IdTipoReceita == tiposReceita.First().IdTipoReceita);
+            }
+
+            if (!string.IsNullOrEmpty(filtro.Tempo))
+            {
+                var modoPreparo = await _modoPreparoConsulta.ObterListarModoPreparo();
+            }
+
+            return receitas.Select(r => new ReceitaDto
             {
                 IdReceita = r.IdReceita,
                 IdTipoReceita = r.IdTipoReceita,

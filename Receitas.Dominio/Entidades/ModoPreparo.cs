@@ -28,6 +28,9 @@ namespace Receitas.Dominio.Entidades
 
         [Column("Ingredientes")]
         public List<IngredienteItem> Ingredientes { get; set; }
+
+        [Column("Tempo")]
+        public TimeSpan? Tempo { get; set; }
     }
 
     public class ModoPreparoItem

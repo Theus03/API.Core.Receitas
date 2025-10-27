@@ -4,6 +4,7 @@ using Receitas.Dominio.Entidades;
 using Receitas.Aplicacao.Consultas;
 using Receitas.Dominio.DTOs;
 using Receitas.Aplicacao.Comandos;
+using Receitas.Dominio.Filtros;
 
 namespace API.Core.Receitas.Controllers
 {
@@ -22,17 +23,17 @@ namespace API.Core.Receitas.Controllers
             _logger = logger;
         }
 
-        [HttpGet("ListarReceitas")]
+        [HttpPost("ListarReceitas")]
         [SwaggerOperation(Summary = "Método para listar e pesquisar as receitas")]
         [ProducesResponseType(typeof(IEnumerable<ReceitaDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> ListarReceitas()
+        public async Task<IActionResult> ListarReceitas([FromBody] FiltroListarReceitas filtro)
         {
             try
             {
                 _logger.LogInformation("Iniciando a listagem de receitas.");
 
-                var resultado = await Task.Run(() => _consultas.ObterListaReceitas());
+                var resultado = await Task.Run(() => _consultas.ObterListaReceitas(filtro));
                 return Ok(resultado);
             }
             catch (Exception ex)

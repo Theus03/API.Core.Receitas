@@ -19,6 +19,29 @@ namespace Receitas.Repositorio.Consultas
             _configuration = configuration;
         }
 
+        public async Task<IEnumerable<ModoPreparoDto>> ObterListarModoPreparo()
+        {
+            var supabaseUrl = _configuration["SupabaseUrl"];
+            var supabaseKey = _configuration["SupabaseKey"];
+
+            var client = new Client(supabaseUrl!, supabaseKey);
+
+            await client.InitializeAsync();
+
+            var modoPreparo = await client.From<ModoPreparo>().Get();
+
+            return modoPreparo.Models.Select(m => new ModoPreparoDto
+            {
+                IdPreparo = m.IdPreparo,
+                IdReceita = m.IdReceita,
+                DataCriacao = m.DataCriacao,
+                QtdeEtapas = m.QtdeEtapas,
+                InstrucoesPreparo = m.InstrucoesPreparo.Select(i => new Dominio.DTOs.ModoPreparoItem { Etapa = i.Etapa, Descricao = i.Descricao }).ToList(),
+                Ingredientes = m.Ingredientes.Select(i => new Dominio.DTOs.IngredienteItem { Nome = i.Nome, Quantidade = i.Quantidade }).ToList(),
+                Tempo = m.Tempo
+            });
+        }
+
         public async Task<ModoPreparoDto> ObterModoPreparoPorIdReceita(int idReceita)
         {
             var supabaseUrl = _configuration["SupabaseUrl"];
@@ -39,7 +62,8 @@ namespace Receitas.Repositorio.Consultas
                 DataCriacao = mModel.DataCriacao,
                 QtdeEtapas = mModel.QtdeEtapas,
                 InstrucoesPreparo = mModel.InstrucoesPreparo.Select(i => new Dominio.DTOs.ModoPreparoItem { Etapa = i.Etapa, Descricao = i.Descricao }).ToList(),
-                Ingredientes = mModel.Ingredientes.Select(i => new Dominio.DTOs.IngredienteItem { Nome = i.Nome, Quantidade = i.Quantidade }).ToList()
+                Ingredientes = mModel.Ingredientes.Select(i => new Dominio.DTOs.IngredienteItem { Nome = i.Nome, Quantidade = i.Quantidade }).ToList(),
+                Tempo = mModel.Tempo
             };
         }
     }

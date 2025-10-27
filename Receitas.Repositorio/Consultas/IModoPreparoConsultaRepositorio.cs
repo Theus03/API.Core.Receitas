@@ -9,6 +9,7 @@ namespace Receitas.Repositorio.Consultas
 {
     public interface IModoPreparoConsultaRepositorio
     {
+        public Task<IEnumerable<ModoPreparoDto>> ObterListarModoPreparo();
         public Task<ModoPreparoDto> ObterModoPreparoPorIdReceita(int idReceita);
     }
 }

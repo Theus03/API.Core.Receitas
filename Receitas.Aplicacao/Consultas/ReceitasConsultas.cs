@@ -1,5 +1,6 @@
 ﻿using Receitas.Dominio.DTOs;
 using Receitas.Dominio.Entidades;
+using Receitas.Dominio.Filtros;
 using Receitas.Repositorio.Consultas;
 using System;
 using System.Collections.Generic;
@@ -18,9 +19,9 @@ namespace Receitas.Aplicacao.Consultas
             _consultas = consultas;
         }
 
-        public async Task<IEnumerable<ReceitaDto>> ObterListaReceitas()
+        public async Task<IEnumerable<ReceitaDto>> ObterListaReceitas(FiltroListarReceitas filtro)
         {
-            IEnumerable<ReceitaDto> receitas = await _consultas.ObterReceitas();
+            IEnumerable<ReceitaDto> receitas = await _consultas.ObterReceitas(filtro);
             return receitas;
         }
 
