@@ -19,7 +19,7 @@ namespace Receitas.Repositorio.Consultas
             _configuration = configuration;
         }
 
-        public async Task<IEnumerable<ModoPreparoDto>> ObterListarModoPreparo()
+        public async Task<List<ModoPreparoDto>> ObterListarModoPreparo()
         {
             var supabaseUrl = _configuration["SupabaseUrl"];
             var supabaseKey = _configuration["SupabaseKey"];
@@ -39,7 +39,7 @@ namespace Receitas.Repositorio.Consultas
                 InstrucoesPreparo = m.InstrucoesPreparo.Select(i => new Dominio.DTOs.ModoPreparoItem { Etapa = i.Etapa, Descricao = i.Descricao }).ToList(),
                 Ingredientes = m.Ingredientes.Select(i => new Dominio.DTOs.IngredienteItem { Nome = i.Nome, Quantidade = i.Quantidade }).ToList(),
                 Tempo = m.Tempo
-            });
+            }).ToList();
         }
 
         public async Task<ModoPreparoDto> ObterModoPreparoPorIdReceita(int idReceita)

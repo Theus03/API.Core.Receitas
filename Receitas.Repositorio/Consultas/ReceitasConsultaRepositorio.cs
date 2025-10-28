@@ -5,6 +5,7 @@ using Receitas.Dominio.Filtros;
 using Supabase;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,7 +49,12 @@ namespace Receitas.Repositorio.Consultas
             if (!string.IsNullOrEmpty(filtro.Tempo))
             {
                 var modoPreparo = await _modoPreparoConsulta.ObterListarModoPreparo();
+                TimeSpan tempoMaximo = TimeSpan.Parse(filtro.Tempo);
+
+                var idsValidos = modoPreparo.Where(m => m.Tempo.HasValue && m.Tempo.Value <= tempoMaximo).Select(m => m.IdReceita).Distinct().ToList();
+                receitas = receitas.Where(r => idsValidos.Contains(r.IdReceita));
             }
+
 
             return receitas.Select(r => new ReceitaDto
             {
