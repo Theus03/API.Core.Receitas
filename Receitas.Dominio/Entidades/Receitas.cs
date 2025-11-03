@@ -19,5 +19,8 @@ namespace Receitas.Dominio.Entidades
         [Column("Nome")]
         public string? Nome { get; set; }
 
+        [Column("Imagem")]
+        public string? Imagem { get; set; }
+
     }
 }

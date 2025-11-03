@@ -1,4 +1,5 @@
-﻿using Supabase.Postgrest.Attributes;
+﻿using Microsoft.AspNetCore.Http;
+using Supabase.Postgrest.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,6 @@ namespace Receitas.Dominio.DTOs
         public int? IdTipoReceita { get; set; }
         public DateTime? DataCriacao { get; set; }
         public string? Nome { get; set; }
+        public string?  Imagem { get; set; }
     }
 }

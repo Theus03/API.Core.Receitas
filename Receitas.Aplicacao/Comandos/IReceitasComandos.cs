@@ -1,5 +1,6 @@
 ﻿using Receitas.Dominio.DTOs;
 using Receitas.Dominio.Entidades;
+using Receitas.Dominio.Requests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Receitas.Aplicacao.Comandos
 {
     public interface IReceitasComandos
     {
-        public Task<ReceitaDto> InserirReceita(ReceitaDto receita);
+        public Task<ReceitaDto> InserirReceita(InserirReceitaRequest receita);
         public Task<TiposReceitaDto> InserirTipoReceita(TiposReceitaDto tipoReceita);
     }
 }

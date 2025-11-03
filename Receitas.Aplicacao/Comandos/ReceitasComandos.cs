@@ -1,5 +1,6 @@
 ﻿using Receitas.Dominio.DTOs;
 using Receitas.Dominio.Entidades;
+using Receitas.Dominio.Requests;
 using Receitas.Repositorio.Comandos;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace Receitas.Aplicacao.Comandos
             _comandos = comandos;
         }
 
-        public async Task<ReceitaDto> InserirReceita(ReceitaDto receita)
+        public async Task<ReceitaDto> InserirReceita(InserirReceitaRequest receita)
         {
             return await _comandos.InserirReceita(receita);
         }
