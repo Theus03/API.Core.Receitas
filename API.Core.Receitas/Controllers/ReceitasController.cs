@@ -5,6 +5,7 @@ using Receitas.Aplicacao.Consultas;
 using Receitas.Dominio.DTOs;
 using Receitas.Aplicacao.Comandos;
 using Receitas.Dominio.Filtros;
+using Receitas.Dominio.Requests;
 
 namespace API.Core.Receitas.Controllers
 {
@@ -65,17 +66,18 @@ namespace API.Core.Receitas.Controllers
         }
 
         [HttpPost("InserirReceita")]
+        [Consumes("multipart/form-data")]
         [SwaggerOperation(Summary = "Método para inserir uma receita")]
         [ProducesResponseType(typeof(ReceitaDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> InserirReceita([FromBody] ReceitaDto receita)
+        public async Task<IActionResult> InserirReceita([FromForm] InserirReceitaRequest receita)
         {
             try
             {
                 _logger.LogInformation("Inserindo uma nova receita.");
-                var resultado = await Task.Run(() => _comandos.InserirReceita(receita));
+                var resultado = await _comandos.InserirReceita(receita);
                 return Ok(resultado);
-            }
+            }   
             catch (Exception ex)
             {
                 return BadRequest(new { Mensagem = ex.Message });
