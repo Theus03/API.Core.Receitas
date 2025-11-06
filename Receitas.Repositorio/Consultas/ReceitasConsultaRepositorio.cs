@@ -61,7 +61,8 @@ namespace Receitas.Repositorio.Consultas
                 IdReceita = r.IdReceita,
                 IdTipoReceita = r.IdTipoReceita,
                 DataCriacao = r.DataCriacao,
-                Nome = r.Nome
+                Nome = r.Nome,
+                Imagem = r.Imagem
             });
         }
 
