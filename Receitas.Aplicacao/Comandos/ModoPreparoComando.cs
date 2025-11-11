@@ -13,14 +13,8 @@ namespace Receitas.Aplicacao.Comandos
 
         private readonly IModoPreparoComandosRepositorio _comandos;
 
-        public ModoPreparoComando(IModoPreparoComandosRepositorio comandos)
-        {
-            _comandos = comandos;
-        }
+        public ModoPreparoComando(IModoPreparoComandosRepositorio comandos) =>  _comandos = comandos;
 
-        public Task<ModoPreparoDto> InserirModoPreparo(ModoPreparoDto modoPreparo)
-        {
-            return _comandos.InserirModoPreparo(modoPreparo);   
-        }
+        public Task<ModoPreparoDto> InserirModoPreparo(ModoPreparoDto modoPreparo) => _comandos.InserirModoPreparo(modoPreparo);  
     }
 }

@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Receitas.Dominio.DTOs;
 using Receitas.Dominio.Entidades;
+using Receitas.Repositorio.Conexao;
 using Supabase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,20 +15,18 @@ namespace Receitas.Repositorio.Comandos
     public class ModoPreparoComandosRepositorio : IModoPreparoComandosRepositorio
     {
         private readonly IConfiguration _configuration;
+        private readonly IContextDB _contextDB;
 
-        public ModoPreparoComandosRepositorio(IConfiguration configuration)
+        public ModoPreparoComandosRepositorio(IConfiguration configuration, IContextDB contextDB)
         {
             _configuration = configuration;
+            _contextDB = contextDB;
         }
 
         public async Task<ModoPreparoDto> InserirModoPreparo(ModoPreparoDto modoPreparo)
         {
-            var supabaseUrl = _configuration["supabaseUrl"];
-            var supabaseKey = _configuration["supabaseKey"];
 
-            var client = new Client(supabaseUrl!, supabaseKey);
-
-            await client.InitializeAsync();
+            Client client = await _contextDB.ObterConexao();
 
             ModoPreparo novoModoPreparo = new ModoPreparo
             {

@@ -14,19 +14,10 @@ namespace Receitas.Aplicacao.Comandos
     {
         private readonly IReceitasComandosRepositorio _comandos;
 
-        public ReceitasComandos(IReceitasComandosRepositorio comandos)
-        {
-            _comandos = comandos;
-        }
+        public ReceitasComandos(IReceitasComandosRepositorio comandos) => _comandos = comandos;
 
-        public async Task<ReceitaDto> InserirReceita(InserirReceitaRequest receita)
-        {
-            return await _comandos.InserirReceita(receita);
-        }
+        public async Task<ReceitaDto> InserirReceita(InserirReceitaRequest receita) => await _comandos.InserirReceita(receita);
 
-        public async Task<TiposReceitaDto> InserirTipoReceita(TiposReceitaDto tipoReceita)
-        {
-            return await _comandos.InserirTipoReceita(tipoReceita);
-        }
+        public async Task<TiposReceitaDto> InserirTipoReceita(TiposReceitaDto tipoReceita) => await _comandos.InserirTipoReceita(tipoReceita);
     }
 }

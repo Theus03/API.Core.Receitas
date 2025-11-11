@@ -2,6 +2,7 @@
 using Receitas.Dominio.DTOs;
 using Receitas.Dominio.Entidades;
 using Receitas.Dominio.Filtros;
+using Receitas.Repositorio.Conexao;
 using Supabase;
 using System;
 using System.Collections.Generic;
@@ -16,24 +17,21 @@ namespace Receitas.Repositorio.Consultas
     {
         private readonly IConfiguration _configuration;
         private readonly IModoPreparoConsultaRepositorio _modoPreparoConsulta;
+        private readonly IContextDB _contextDB;
 
-        public ReceitasConsultaRepositorio(IConfiguration configuration, IModoPreparoConsultaRepositorio modoPreparoConsulta)
+        public ReceitasConsultaRepositorio(IConfiguration configuration, IModoPreparoConsultaRepositorio modoPreparoConsulta, IContextDB contextDB)
         {
             _configuration = configuration;
             _modoPreparoConsulta = modoPreparoConsulta;
+            _contextDB = contextDB;
         }
 
         public async Task<IEnumerable<ReceitaDto>> ObterReceitas(FiltroListarReceitas filtro)
         {
-
-            var supabaseUrl = _configuration["SupabaseUrl"];
-            var supabaseKey = _configuration["SupabaseKey"];
-
-            var client = new Client(supabaseUrl!, supabaseKey);
-
-            await client.InitializeAsync();
+            var client = await _contextDB.ObterConexao();
 
             var resposta = await client.From<Receita>().Get();
+
             var receitas = resposta.Models.AsQueryable();
 
             if (!string.IsNullOrEmpty(filtro.Nome))
@@ -68,13 +66,8 @@ namespace Receitas.Repositorio.Consultas
 
         public async Task<ReceitaDto> ObterReceitaPorId(int id)
         {
-            var supabaseUrl = _configuration["SupabaseUrl"];
-            var supabaseKey = _configuration["SupabaseKey"];
+           var client = await _contextDB.ObterConexao();
 
-            var client = new Client(supabaseUrl!, supabaseKey);
-
-            await client.InitializeAsync();
-            
             var receita = await client.From<Receita>().Where(r => r.IdReceita == id).Get();
             
             var rModel = receita.Models.FirstOrDefault();
@@ -90,12 +83,7 @@ namespace Receitas.Repositorio.Consultas
 
         public async Task<IEnumerable<TiposReceitaDto>> ObterTiposReceitas()
         {
-            var supabaseUrl = _configuration["SupabaseUrl"];
-            var supabaseKey = _configuration["SupabaseKey"];
-
-            var client = new Client(supabaseUrl!, supabaseKey);
-
-            await client.InitializeAsync();
+            var client = await _contextDB.ObterConexao();
 
             var tiposReceitas = await client.From<TiposReceita>().Get();
 

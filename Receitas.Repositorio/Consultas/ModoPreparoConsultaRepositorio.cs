@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Receitas.Dominio.DTOs;
 using Receitas.Dominio.Entidades;
+using Receitas.Repositorio.Conexao;
 using Supabase;
 using System;
 using System.Collections.Generic;
@@ -13,20 +14,17 @@ namespace Receitas.Repositorio.Consultas
     public class ModoPreparoConsultaRepositorio : IModoPreparoConsultaRepositorio
     {
         private readonly IConfiguration _configuration;
+        private readonly IContextDB _contextDB;
 
-        public ModoPreparoConsultaRepositorio(IConfiguration configuration)
+        public ModoPreparoConsultaRepositorio(IConfiguration configuration, IContextDB contextDB)
         {
             _configuration = configuration;
+            _contextDB = contextDB;
         }
 
         public async Task<List<ModoPreparoDto>> ObterListarModoPreparo()
         {
-            var supabaseUrl = _configuration["SupabaseUrl"];
-            var supabaseKey = _configuration["SupabaseKey"];
-
-            var client = new Client(supabaseUrl!, supabaseKey);
-
-            await client.InitializeAsync();
+            var client = await _contextDB.ObterConexao();
 
             var modoPreparo = await client.From<ModoPreparo>().Get();
 
@@ -44,12 +42,7 @@ namespace Receitas.Repositorio.Consultas
 
         public async Task<ModoPreparoDto> ObterModoPreparoPorIdReceita(int idReceita)
         {
-            var supabaseUrl = _configuration["SupabaseUrl"];
-            var supabaseKey = _configuration["SupabaseKey"];
-
-            var client = new Client(supabaseUrl!, supabaseKey);
-
-            await client.InitializeAsync();
+            var client = await _contextDB.ObterConexao();
 
             var modoPreparo = await client.From<ModoPreparo>().Where(m => m.IdReceita == idReceita).Get();
 

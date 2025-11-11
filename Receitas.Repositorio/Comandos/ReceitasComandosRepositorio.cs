@@ -2,6 +2,7 @@
 using Receitas.Dominio.DTOs;
 using Receitas.Dominio.Entidades;
 using Receitas.Dominio.Requests;
+using Receitas.Repositorio.Conexao;
 using Supabase;
 using Supabase.Interfaces;
 using Supabase.Storage;
@@ -16,20 +17,19 @@ namespace Receitas.Repositorio.Comandos
     public class ReceitasComandosRepositorio : IReceitasComandosRepositorio
     {
         private readonly IConfiguration _configuration;
+        private readonly IContextDB _contextDB;
 
-        public ReceitasComandosRepositorio(IConfiguration configuration)
+        public ReceitasComandosRepositorio(IConfiguration configuration, IContextDB contextDB)
         {
             _configuration = configuration;
+            _contextDB = contextDB;
         }
 
         public async Task<ReceitaDto> InserirReceita(InserirReceitaRequest receita)
         {
-            var supabaseUrl = _configuration["supabaseUrl"];
-            var supabaseKey = _configuration["supabaseKey"];
-            var bucket = _configuration["supabaseBucket"];
+            var client = await _contextDB.ObterConexao();
 
-            var client = new Supabase.Client(supabaseUrl!, supabaseKey);
-            await client.InitializeAsync();
+            var bucket = _configuration["supabaseBucket"];
 
             string imagemUrl = _configuration["NoImageBucket"]!;
 
@@ -60,12 +60,7 @@ namespace Receitas.Repositorio.Comandos
 
         public async Task<TiposReceitaDto> InserirTipoReceita(TiposReceitaDto tipoReceita)
         {
-            var supabaseUrl = _configuration["supabaseUrl"];
-            var supabaseKey = _configuration["supabaseKey"];
-
-            var client = new Supabase.Client(supabaseUrl!, supabaseKey);
-
-            await client.InitializeAsync();
+            var client = await _contextDB.ObterConexao();
 
             TiposReceita novoTipoReceita = new TiposReceita
             {

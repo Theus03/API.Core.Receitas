@@ -4,6 +4,7 @@ using Microsoft.OpenApi.Models;
 using Receitas.Aplicacao.Comandos;
 using Receitas.Aplicacao.Consultas;
 using Receitas.Repositorio.Comandos;
+using Receitas.Repositorio.Conexao;
 using Receitas.Repositorio.Consultas;
 using Supabase;
 
@@ -26,6 +27,8 @@ builder.Services.AddSwaggerGen(c =>
 
 });
 
+
+builder.Services.AddScoped<IContextDB, ContextDB>();
 builder.Services.AddScoped<IReceitasConsultas, ReceitasConsultas>();
 builder.Services.AddScoped<IReceitasConsultaRepositorio, ReceitasConsultaRepositorio>();
 
