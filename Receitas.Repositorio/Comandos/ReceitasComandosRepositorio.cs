@@ -40,8 +40,6 @@ namespace Receitas.Repositorio.Comandos
             Receita novaReceita = new Receita
             {
                 IdTipoReceita = receita.IdTipoReceita,
-                DataCriacao = DateTime.UtcNow,
-                Nome = receita.Nome,
                 Imagem = imagemUrl
             };
 
