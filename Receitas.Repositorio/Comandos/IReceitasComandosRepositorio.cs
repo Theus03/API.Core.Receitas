@@ -11,7 +11,8 @@ namespace Receitas.Repositorio.Comandos
 {
     public interface IReceitasComandosRepositorio
     {
-        public Task<ReceitaDto> InserirReceita(InserirReceitaRequest receita);
+        public Task<ReceitaDto> InserirReceita(Receita receita);
         public Task<TiposReceitaDto> InserirTipoReceita(TiposReceitaDto tipoReceita);
+        public string InserirImagemReceita(InserirReceitaRequest receita);
     }
 }

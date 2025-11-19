@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.10" />
+    <PackageReference Include="NPOI" Version="2.7.5" />
     <PackageReference Include="Supabase" Version="1.1.1" />
     <PackageReference Include="Supabase.Postgrest" Version="4.1.0" />
   </ItemGroup>

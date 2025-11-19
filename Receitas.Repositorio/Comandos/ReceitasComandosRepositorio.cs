@@ -18,32 +18,18 @@ namespace Receitas.Repositorio.Comandos
     {
         private readonly IConfiguration _configuration;
         private readonly IContextDB _contextDB;
+        private Supabase.Client client;
 
         public ReceitasComandosRepositorio(IConfiguration configuration, IContextDB contextDB)
         {
             _configuration = configuration;
             _contextDB = contextDB;
+            client = _contextDB.ObterConexao().Result;
         }
 
-        public async Task<ReceitaDto> InserirReceita(InserirReceitaRequest receita)
+        public async Task<ReceitaDto> InserirReceita(Receita receita)
         {
-            var client = await _contextDB.ObterConexao();
-
-            var bucket = _configuration["supabaseBucket"];
-
-            string imagemUrl = _configuration["NoImageBucket"]!;
-
-            if (receita.Imagem != null) {
-                imagemUrl = InserirImagemReceita(receita, client, bucket!);
-            }
-
-            Receita novaReceita = new Receita
-            {
-                IdTipoReceita = receita.IdTipoReceita,
-                Imagem = imagemUrl
-            };
-
-            var response = await client.From<Receita>().Insert(novaReceita);
+            var response = await client.From<Receita>().Insert(receita);
 
             return response.Models.Select(r => new ReceitaDto
             {
@@ -58,8 +44,6 @@ namespace Receitas.Repositorio.Comandos
 
         public async Task<TiposReceitaDto> InserirTipoReceita(TiposReceitaDto tipoReceita)
         {
-            var client = await _contextDB.ObterConexao();
-
             TiposReceita novoTipoReceita = new TiposReceita
             {
                 DataCriacao = DateTime.UtcNow,
@@ -76,9 +60,12 @@ namespace Receitas.Repositorio.Comandos
             }).FirstOrDefault()!;
         }
 
-        public string InserirImagemReceita(InserirReceitaRequest receita, Supabase.Client client, string bucket)
+        public string InserirImagemReceita(InserirReceitaRequest receita)
         {
             byte[] bytes;
+
+            var bucket = _configuration["supabaseBucket"];
+
             using (var ms = new MemoryStream())
             {
                 receita.Imagem!.CopyToAsync(ms);

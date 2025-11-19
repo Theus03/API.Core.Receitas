@@ -14,10 +14,10 @@ namespace Receitas.Dominio.Entidades
         public int? IdTipoReceita { get; set; }
 
         [Column("DataCriacao")]
-        public DateTime? DataCriacao { get; private set; }
+        public DateTime? DataCriacao { get; set; }
 
         [Column("Nome")]
-        public string? Nome { get; private set; }
+        public string? Nome { get; set; }
 
         [Column("Imagem")]
         public string? Imagem { get; set; }

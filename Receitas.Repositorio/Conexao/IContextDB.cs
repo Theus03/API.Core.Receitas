@@ -11,5 +11,6 @@ namespace Receitas.Repositorio.Conexao
     public interface IContextDB
     {
         public Task<Supabase.Client> ObterConexao();
+
     }
 }
