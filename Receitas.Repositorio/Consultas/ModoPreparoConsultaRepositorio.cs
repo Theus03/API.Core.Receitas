@@ -3,6 +3,7 @@ using Receitas.Dominio.DTOs;
 using Receitas.Dominio.Entidades;
 using Receitas.Repositorio.Conexao;
 using Supabase;
+using Supabase.Postgrest.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +25,9 @@ namespace Receitas.Repositorio.Consultas
 
         public async Task<List<ModoPreparoDto>> ObterListarModoPreparo()
         {
-            var client = await _contextDB.ObterConexao();
+            Client client = await _contextDB.ObterConexao();
 
-            var modoPreparo = await client.From<ModoPreparo>().Get();
+            ModeledResponse<ModoPreparo> modoPreparo = await client.From<ModoPreparo>().Get();
 
             return modoPreparo.Models.Select(m => new ModoPreparoDto
             {
@@ -42,21 +43,21 @@ namespace Receitas.Repositorio.Consultas
 
         public async Task<ModoPreparoDto> ObterModoPreparoPorIdReceita(int idReceita)
         {
-            var client = await _contextDB.ObterConexao();
+            Client client = await _contextDB.ObterConexao();
 
-            var modoPreparo = await client.From<ModoPreparo>().Where(m => m.IdReceita == idReceita).Get();
+            ModeledResponse<ModoPreparo> modoPreparo = await client.From<ModoPreparo>().Where(m => m.IdReceita == idReceita).Get();
 
-            var mModel = modoPreparo.Models.FirstOrDefault();
+            ModoPreparo? mModel = modoPreparo.Models.FirstOrDefault();
 
             return new ModoPreparoDto
             {
-                IdPreparo = mModel.IdPreparo,
-                IdReceita = mModel.IdReceita,
-                DataCriacao = mModel.DataCriacao,
-                QtdeEtapas = mModel.QtdeEtapas,
-                InstrucoesPreparo = mModel.InstrucoesPreparo.Select(i => new Dominio.DTOs.ModoPreparoItem { Etapa = i.Etapa, Descricao = i.Descricao }).ToList(),
-                Ingredientes = mModel.Ingredientes.Select(i => new Dominio.DTOs.IngredienteItem { Nome = i.Nome, Quantidade = i.Quantidade }).ToList(),
-                Tempo = mModel.Tempo
+                IdPreparo = mModel?.IdPreparo,
+                IdReceita = mModel?.IdReceita,
+                DataCriacao = mModel?.DataCriacao,
+                QtdeEtapas = mModel?.QtdeEtapas,
+                InstrucoesPreparo = mModel?.InstrucoesPreparo.Select(i => new Dominio.DTOs.ModoPreparoItem { Etapa = i.Etapa, Descricao = i.Descricao }).ToList()!,
+                Ingredientes = mModel?.Ingredientes.Select(i => new Dominio.DTOs.IngredienteItem { Nome = i.Nome, Quantidade = i.Quantidade }).ToList()!,
+                Tempo = mModel?.Tempo
             };
         }
     }

@@ -3,6 +3,7 @@ using Receitas.Dominio.DTOs;
 using Receitas.Dominio.Entidades;
 using Receitas.Repositorio.Conexao;
 using Supabase;
+using Supabase.Postgrest.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +40,7 @@ namespace Receitas.Repositorio.Comandos
                 Tempo = modoPreparo.Tempo
             };
 
-            var response = await client.From<ModoPreparo>().Insert(novoModoPreparo);
+            ModeledResponse<ModoPreparo> response = await client.From<ModoPreparo>().Insert(novoModoPreparo);
 
             return response.Models.Select(m => new ModoPreparoDto
             {

@@ -19,10 +19,10 @@ namespace Receitas.Repositorio.Conexao
 
         public async Task<Supabase.Client> ObterConexao()
         {
-            var supabaseUrl = _configuration["supabaseUrl"];
-            var supabaseKey = _configuration["supabaseKey"];
+            string supabaseUrl = _configuration["supabaseUrl"]!.ToString();
+            string supabaseKey = _configuration["supabaseKey"]!.ToString();
 
-            var client = new Supabase.Client(supabaseUrl!, supabaseKey);
+            Supabase.Client client = new(supabaseUrl!, supabaseKey);
 
             await client.InitializeAsync();
 

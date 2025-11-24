@@ -5,7 +5,9 @@ using Receitas.Dominio.Requests;
 using Receitas.Repositorio.Conexao;
 using Supabase;
 using Supabase.Interfaces;
+using Supabase.Postgrest.Responses;
 using Supabase.Storage;
+using Supabase.Storage.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +31,7 @@ namespace Receitas.Repositorio.Comandos
 
         public async Task<ReceitaDto> InserirReceita(Receita receita)
         {
-            var response = await client.From<Receita>().Insert(receita);
+            ModeledResponse<Receita> response = await client.From<Receita>().Insert(receita);
 
             return response.Models.Select(r => new ReceitaDto
             {
@@ -44,13 +46,13 @@ namespace Receitas.Repositorio.Comandos
 
         public async Task<TiposReceitaDto> InserirTipoReceita(TiposReceitaDto tipoReceita)
         {
-            TiposReceita novoTipoReceita = new TiposReceita
+            TiposReceita novoTipoReceita = new()
             {
                 DataCriacao = DateTime.UtcNow,
                 TipoReceita = tipoReceita.TipoReceita
             };
 
-            var response = await client.From<TiposReceita>().Insert(novoTipoReceita);
+            ModeledResponse<TiposReceita> response = await client.From<TiposReceita>().Insert(novoTipoReceita);
 
             return response.Models.Select(r => new TiposReceitaDto
             {
@@ -64,15 +66,15 @@ namespace Receitas.Repositorio.Comandos
         {
             byte[] bytes;
 
-            var bucket = _configuration["supabaseBucket"];
+            string bucket = _configuration["supabaseBucket"]!.ToString()!;
 
-            using (var ms = new MemoryStream())
+            using (MemoryStream ms = new())
             {
                 receita.Imagem!.CopyToAsync(ms);
                 bytes = ms.ToArray();
             }
 
-            var storage = client.Storage.From(bucket!);
+            IStorageFileApi<FileObject> storage = client.Storage.From(bucket!);
 
             string fileName = $"{Guid.NewGuid()}_{receita.Imagem!.FileName}";
 

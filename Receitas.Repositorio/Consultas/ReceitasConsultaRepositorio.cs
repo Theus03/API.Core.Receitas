@@ -4,6 +4,7 @@ using Receitas.Dominio.Entidades;
 using Receitas.Dominio.Filtros;
 using Receitas.Repositorio.Conexao;
 using Supabase;
+using Supabase.Postgrest.Responses;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,28 +29,28 @@ namespace Receitas.Repositorio.Consultas
 
         public async Task<IEnumerable<ReceitaDto>> ObterReceitas(FiltroListarReceitas filtro)
         {
-            var client = await _contextDB.ObterConexao();
+            Client client = await _contextDB.ObterConexao();
 
-            var resposta = await client.From<Receita>().Get();
+            ModeledResponse<Receita> resposta = await client.From<Receita>().Get();
 
-            var receitas = resposta.Models.AsQueryable();
+            IQueryable<Receita> receitas = resposta.Models.AsQueryable();
 
             if (!string.IsNullOrEmpty(filtro.Nome))
                 receitas = receitas.Where(r => r.Nome!.ToUpper().Contains(filtro.Nome!.ToUpper().Trim()));
 
             if (!string.IsNullOrEmpty(filtro.TipoReceita))
             {
-                var tiposReceita = await ObterTiposReceitas();
+                IEnumerable<TiposReceitaDto> tiposReceita = await ObterTiposReceitas();
                 tiposReceita = tiposReceita.Where(t => t.TipoReceita!.ToUpper() == filtro.TipoReceita!.ToUpper().Trim());
                 receitas = receitas.Where(r => r.IdTipoReceita == tiposReceita.First().IdTipoReceita);
             }
 
             if (!string.IsNullOrEmpty(filtro.Tempo))
             {
-                var modoPreparo = await _modoPreparoConsulta.ObterListarModoPreparo();
+                List<ModoPreparoDto> modoPreparo = await _modoPreparoConsulta.ObterListarModoPreparo();
                 TimeSpan tempoMaximo = TimeSpan.Parse(filtro.Tempo);
 
-                var idsValidos = modoPreparo.Where(m => m.Tempo.HasValue && m.Tempo.Value <= tempoMaximo).Select(m => m.IdReceita).Distinct().ToList();
+                List<int?> idsValidos = modoPreparo.Where(m => m.Tempo.HasValue && m.Tempo.Value <= tempoMaximo).Select(m => m.IdReceita).Distinct().ToList();
                 receitas = receitas.Where(r => idsValidos.Contains(r.IdReceita));
             }
 
@@ -66,11 +67,11 @@ namespace Receitas.Repositorio.Consultas
 
         public async Task<ReceitaDto> ObterReceitaPorId(int id)
         {
-           var client = await _contextDB.ObterConexao();
+            Client client = await _contextDB.ObterConexao();
 
-            var receita = await client.From<Receita>().Where(r => r.IdReceita == id).Get();
+            ModeledResponse<Receita> receita = await client.From<Receita>().Where(r => r.IdReceita == id).Get();
             
-            var rModel = receita.Models.FirstOrDefault();
+            Receita? rModel = receita.Models.FirstOrDefault();
 
             return new ReceitaDto
             {
@@ -83,11 +84,11 @@ namespace Receitas.Repositorio.Consultas
 
         public async Task<IEnumerable<TiposReceitaDto>> ObterTiposReceitas()
         {
-            var client = await _contextDB.ObterConexao();
+            Client client = await _contextDB.ObterConexao();
 
-            var tiposReceitas = await client.From<TiposReceita>().Get();
+            ModeledResponse<TiposReceita> tiposReceitas = await client.From<TiposReceita>().Get();
 
-            var qtdeTipoPorReceita = await client.From<Receita>().Where(r => r.IdTipoReceita != null).Get();
+            ModeledResponse<Receita> qtdeTipoPorReceita = await client.From<Receita>().Where(r => r.IdTipoReceita != null).Get();
 
             return tiposReceitas.Models.Select(t => new TiposReceitaDto
             {
