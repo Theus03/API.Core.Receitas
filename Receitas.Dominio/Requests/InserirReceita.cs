@@ -10,6 +10,7 @@ namespace Receitas.Dominio.Requests
     public class InserirReceitaRequest
     {
         public int IdTipoReceita { get; set; }
+        public string? TipoReceita { get; set; }
         public string Nome { get; set; }
         public IFormFile? Imagem { get; set; }
     }

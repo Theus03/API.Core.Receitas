@@ -22,7 +22,6 @@ namespace Receitas.Dominio.Entidades
         [Column("Imagem")]
         public string? Imagem { get; set; }
 
-        // ❗ necessário para o Supabase (ORM)
         public Receita() { }
 
         public Receita(string nome)
